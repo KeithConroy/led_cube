@@ -114,6 +114,7 @@ void update_matrix_no_clear(int duration){
     }
   }
 }
+
 void deploy_matrix(){
   clrPin(latchPin);
 

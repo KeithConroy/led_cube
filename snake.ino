@@ -1,6 +1,6 @@
 int snake[sq(units)][3];
 int snake_length = 0;
-int food[3] = {0};
+int target[3] = {0};
 
 void init_snake(){
   snake_length = 0;
@@ -10,22 +10,22 @@ void init_snake(){
   }
 }
 
-void init_food(){
+void init_target(){
   for (int i = 0; i < 3; i++){
-    food[i] = random(units);
+    target[i] = random(units);
   }
 
-  set_food();
+  set_target();
 }
 
-void set_food(){
-  int c = get_column_id(food[0], food[2]);
-  columns[c].set_bit(food[1]);
+void set_target(){
+  int c = get_column_id(target[0], target[2]);
+  columns[c].set_bit(target[1]);
 }
 
 void snake_game(){
   init_snake();
-  init_food();
+  init_target();
 
   unsigned long start = millis();
 
@@ -42,7 +42,7 @@ void snake_game(){
       int c = get_column_id(snake[i][0], snake[i][2]);
       columns[c].set_bit(snake[i][1]);
     }
-    set_food();
+    set_target();
 
     update_matrix(100);
     advance_snake(counter);
@@ -54,20 +54,20 @@ void advance_snake(int counter){
   int y = snake[counter][1];
   int z = snake[counter][2];
 
-  if (x < food[0]){
+  if (x < target[0]){
     x++;
-  } else if (x > food[0]) {
+  } else if (x > target[0]) {
     x--;
-  } else if (y < food[1]){
+  } else if (y < target[1]){
     y++;
-  } else if (y > food[1]) {
+  } else if (y > target[1]) {
     y--;
-  } else if (z < food[2]){
+  } else if (z < target[2]){
     z++;
-  } else if (z > food[2]) {
+  } else if (z > target[2]) {
     z--;
   } else {
-    init_food();
+    init_target();
     snake_length++;
   }
 
@@ -77,12 +77,12 @@ void advance_snake(int counter){
   snake[next_id][1] = y;
   snake[next_id][2] = z;
 
-//  bool x_match = x == food[0];
-//  bool y_match = y == food[1];
-//  bool z_match = z == food[2];
+//  bool x_match = x == target[0];
+//  bool y_match = y == target[1];
+//  bool z_match = z == target[2];
 //
 //  if (x_match && x_match && x_match){
-//    init_food();
+//    init_target();
 //    snake_length++;
 //  }
 
