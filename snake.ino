@@ -4,7 +4,7 @@ int food[3] = {0};
 
 void init_snake(){
   snake_length = 0;
-  
+
   for (int i = 0; i < 3; i++){
     snake[0][i] = 0;
   }
@@ -14,13 +14,13 @@ void init_food(){
   for (int i = 0; i < 3; i++){
     food[i] = random(units);
   }
-  
+
   set_food();
 }
 
 void set_food(){
-  int col_id = get_column_id(food[0], food[2]);
-  bitSet(columns[col_id], food[1]);
+  int c = get_column_id(food[0], food[2]);
+  columns[c].set_bit(food[1]);
 }
 
 void snake_game(){
@@ -30,7 +30,7 @@ void snake_game(){
   unsigned long start = millis();
 
   int counter = -1;
-  
+
   while(millis() - start < 25000) {
     if (counter >= sq(units)){
       counter = 0;
@@ -39,8 +39,8 @@ void snake_game(){
     }
 
     for (int i = counter - snake_length; i <= counter; i++){
-      int col_id = get_column_id(snake[i][0], snake[i][2]);
-      bitSet(columns[col_id], snake[i][1]);
+      int c = get_column_id(snake[i][0], snake[i][2]);
+      columns[c].set_bit(snake[i][1]);
     }
     set_food();
 
@@ -53,7 +53,7 @@ void advance_snake(int counter){
   int x = snake[counter][0];
   int y = snake[counter][1];
   int z = snake[counter][2];
-  
+
   if (x < food[0]){
     x++;
   } else if (x > food[0]) {
@@ -80,7 +80,7 @@ void advance_snake(int counter){
 //  bool x_match = x == food[0];
 //  bool y_match = y == food[1];
 //  bool z_match = z == food[2];
-//  
+//
 //  if (x_match && x_match && x_match){
 //    init_food();
 //    snake_length++;

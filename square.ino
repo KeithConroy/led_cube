@@ -11,32 +11,32 @@ void square_border(char axis) {
   for (int a = 0; a < units; a++) {
     square_helper(axis, a);
   }
-  
+
   // bounce back
   for (int a = units - 2; a > 0; a--) {
     square_helper(axis, a);
   }
-  
+
   all_off();
 }
 
 void square_helper(char axis, int a){
   int offset = a * units;
-  
+
   for (int i = 0; i < units; i++) {
-    int col = i + offset;
+    int c = i + offset;
     if (i == 0 || i == units_index){
-      columns[col] = 255;
+      columns[c].set_byte(255);
     } else {
-      columns[col] = 129;
+      columns[c].set_byte(129);
     }
   }
-  
+
   update_matrix(squareInterval);
-  
+
   for (int i = 0; i < units; i++) {
-    int col = i + offset;
-    columns[col] = 0;
+    int c = i + offset;
+    columns[c].set_byte(0);
   }
 }
 
@@ -45,7 +45,7 @@ void square_helper(char axis, int a){
 //  for (int a = 0; a < units; a++) {
 //    square_helper(axis, a);
 //  }
-//  
+//
 //  // bounce back
 //  for (int a = (units - 2); a >= 0; a--) {
 //    square_helper(axis, a);
@@ -55,11 +55,11 @@ void square_helper(char axis, int a){
 
 //void square_helper(char axis, int a){
 //  unsigned long start = millis();
-//  
+//
 //  while(millis() - start < squareInterval) {
 //    for (int b = 0; b < units; b++)
 //    for (int c = 0; c < units; c++)
-//    
+//
 //    if(part_of_square(b, c)){
 //      switch(axis) {
 //        case 'z':
@@ -105,47 +105,47 @@ void cube_directional(int x, int y, int z){
 void cube_helper(int cube_units, int a, int b, int c){
   int x,z = 0;
   int less_one = cube_units - 1;
-  
+
   for(x = 0; x < cube_units; x = x + less_one){
      for(z = 0; z < cube_units; z = z + less_one){
         for (int i = 0; i < cube_units; i++){
-          int col_id = get_column_id(x, z);
-           bitSet(columns[col_id], i);
+          int c = get_column_id(x, z);
+           columns[c].set_bit(i);
         }
 
         for(int y = 0; y < cube_units; y = y + less_one){
           for(int zz = z + 1; zz < less_one; zz++){
-            int col_id = get_column_id(x, zz);
-            bitSet(columns[col_id], y);
+            int c = get_column_id(x, zz);
+            columns[c].set_bit(y);
           }
-          
+
           for(int xx = x + 1; xx < less_one; xx++){
-            int col_id = get_column_id(xx, z);
-            bitSet(columns[col_id], y);
+            int c = get_column_id(xx, z);
+            columns[c].set_bit(y);
           }
         }
      }
   }
-  
+
   update_matrix(100);
 }
 //
 //void cube_helper_old(int cube_units, int a, int b, int c) {
 //  unsigned long start = millis();
-//  
+//
 //  while(millis() - start < 150) {
 //    if(a == 0 && b == 0 && c == 0){
 //      int x,z;
 //      int less_one = cube_units - 1;
-//      
+//
 //      for(x = 0; x < cube_units; x = x + less_one){
 //         for(z = 0; z < cube_units; z = z + less_one){
 //            pulse_single_column(x, z, cube_units, 1);
-//  
+//
 //            for(int y = 0; y < cube_units; y = y + less_one){
 //              for(int zz = z + 1; zz < less_one; zz++)
 //              pulse_single_led(x,y,zz,1);
-//  
+//
 //              for(int xx = x + 1; xx < less_one; xx++)
 //              pulse_single_led(xx,y,z,1);
 //            }
@@ -158,11 +158,11 @@ void cube_helper(int cube_units, int a, int b, int c){
 //      for(x = units_index; x >= units - cube_units; x = x - less_one){
 //         for(z = 0; z < cube_units; z = z + less_one){
 //            pulse_single_column(x, z, cube_units, 1);
-//  
+//
 //            for(int y = 0; y < cube_units; y = y + less_one){
 //              for(int zz = z + 1; zz < less_one; zz++)
 //              pulse_single_led(x,y,zz,1);
-//  
+//
 //              for(int xx = x + 1; xx < less_one; xx++)
 //              pulse_single_led(xx,y,z,1);
 //            }
@@ -175,11 +175,11 @@ void cube_helper(int cube_units, int a, int b, int c){
 //      for(x = units_index; x >= units - cube_units; x = x - less_one){
 //         for(z = units_index; z >= units - cube_units; z = z - less_one){
 //            pulse_single_column(x, z, cube_units, 1);
-//  
+//
 //            for(int y = 0; y < cube_units; y = y + less_one){
 //              for(int zz = z + 1; zz < less_one; zz++)
 //              pulse_single_led(x,y,zz,1);
-//  
+//
 //              for(int xx = x + 1; xx < less_one; xx++)
 //              pulse_single_led(xx,y,z,1);
 //            }
@@ -192,18 +192,18 @@ void cube_helper(int cube_units, int a, int b, int c){
 //      for(x = 0; x < cube_units; x = x + less_one){
 //         for(z = units_index; z >= units - cube_units; z = z - less_one){
 //            pulse_single_column(x, z, cube_units, 1);
-//  
+//
 //            for(int y = 0; y < cube_units; y = y + less_one){
 //              for(int zz = z + 1; zz < less_one; zz++)
 //              pulse_single_led(x,y,zz,1);
-//  
+//
 //              for(int xx = x + 1; xx < less_one; xx++)
 //              pulse_single_led(xx,y,z,1);
 //            }
 //         }
 //      }
 //    }
-//  } 
+//  }
 //}
 //
 //void cube_helper_2(int cube_units, int a, int b, int c) {

@@ -33,7 +33,7 @@ byte *world[] = {(byte*)w, (byte*)o, (byte*)r, (byte*)l, (byte*)d};
 void text(){
   display_word(hello, 5);
   delay(200);
-  
+
   display_word(world, 5);
   delay(200);
 
@@ -47,7 +47,7 @@ void display_word(byte* word_array[], int word_length){
     for(int z = units_index; z >= 0; z--){
       for(int x = 0; x < units; x++){
         int c = get_column_id(x, z);
-        columns[c] = word_array[l][x];
+        columns[c].set_byte(word_array[l][x]);
       }
 
       update_matrix(75);

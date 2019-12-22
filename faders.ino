@@ -9,7 +9,7 @@ void fadder_rows() {
     single_row(z, 0);
     update_matrix_no_clear(faderInterval);
   }
-  
+
   for (int z = units-1; z >= 0; z--){
     single_row(z, 255);
     update_matrix_no_clear(faderInterval);
@@ -52,13 +52,13 @@ void fadder_levels() {
 
 void single_level(int y, int value) {
   for(int c = 0; c < sq(units); c++){
-    bitWrite(columns[c], y, value);
+    columns[c].write_bit(y, value);
   }
 }
 
 void single_row(int z, int value){
   for(int x = 0; x < units; x++){
     int c = get_column_id(x, z);
-    columns[c] = value;
+    columns[c].set_byte(value);
   }
 }
